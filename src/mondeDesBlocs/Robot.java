@@ -29,6 +29,7 @@ public class Robot {
     	this.table = table;
     }
     
+    // Permet de verifier qu'un cube est de couleur donnée
     private Couleur validerCouleur(Couleur couleur) {
     	Couleur nouvCouleur;
     	
@@ -40,6 +41,7 @@ public class Robot {
     	return nouvCouleur;
     }
     
+    // Permet de vérifier qu'un cube est de taille donnée
     private Taille validerTaille(Taille taille) {
     	Taille nouvTaille;
     	
@@ -130,6 +132,7 @@ public class Robot {
         }
     }
     
+    // Affiche la pince du robot
     public void afficherRobot() {
         System.out.println("--- État du Robot ---");
         if (tientCube()) {

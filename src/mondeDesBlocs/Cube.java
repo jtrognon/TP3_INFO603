@@ -47,18 +47,22 @@ public class Cube {
         this.dessous = null;
     }
 
+    // Vérifie qu'un cube est de couleur donnée
     public boolean estMemeCouleur(final Couleur couleur) {
         return this.couleur == couleur;
     }
 
+    // Récupère le cube suivant
     public Cube getSuivant() {
         return this.dessus;
     }
 
+    // Donne le cube suivant
     public void setSuivant(final Cube cube) {
     	this.dessus = cube;
     }
 
+    // Vérifie qu'un cube peut accueillir un autre cube de taille donnée
     public boolean peutAccueillir(final Taille taille) {
     	boolean res;
     	
@@ -72,6 +76,7 @@ public class Cube {
         return res;
     }
 
+    // Affiche un cube
     public void afficher() {
         System.out.print("[" + this.couleur + " " + this.taille + "]");
         
