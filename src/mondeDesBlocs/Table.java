@@ -17,23 +17,63 @@ public class Table {
     }
 
     // Récupère le cube de taille et de couleur données
-    public Cube getCube(final String couleur, final Taille taille) {
-    	Cube trouve = contientCube(couleur, taille);
-    	
-    	if (trouve != null) {
-    		return depiler(trouve);
-    	}
-    	
+    public Cube getCube(final Couleur couleur, final Taille taille) {
+        Cube trouve = null;
+
+        if (couleur == null && taille == null) {
+            trouve = contientCubeVide(null); 
+        } else if (couleur != null && taille == null) {
+            trouve = contientCubeCouleur(couleur, null);
+        } else if (couleur == null && taille != null) {
+            trouve = contientCubeTaille(taille);
+        } else {
+            trouve = contientCube(couleur, taille);
+        }
+
+        if (trouve != null) {
+            return depiler(trouve);
+        }
+        
+        return null;
+    }
+    
+    private Cube contientCubeVide(final Taille tailleDuCubeTenu) {
+        for (Cube c : cubes) {
+            if (tailleDuCubeTenu == null || c.peutAccueillir(tailleDuCubeTenu)) {
+                return c;
+            }
+        }
         return null;
     }
 
-    // Verifie s'il y a un cube de taille taille et de couleur couleur
-    private Cube contientCube(final String couleur, final Taille taille) {
+    private Cube contientCubeCouleur(final Couleur couleur, final Taille tailleDuCubeTenu) {
+        for (Cube c : cubes) {
+            if (c.estMemeCouleur(couleur)) {
+                if (tailleDuCubeTenu == null || c.peutAccueillir(tailleDuCubeTenu)) {
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private Cube contientCubeTaille(final Taille taille) {
     	for (Cube c : cubes) {
-    		if (c.estMemeCouleur(couleur) && c.peutAccueillir(taille)) {
+    		if (c.getTaille() == taille) {
     			return c;
     		}
     	}
+    	return null;
+    }
+
+    // Verifie s'il y a un cube de taille taille et de couleur couleur
+    private Cube contientCube(final Couleur couleur, final Taille taille) {
+        for (Cube c : cubes) {
+            // On vérifie juste si c'est le bon cube (couleur et taille)
+            if (c.estMemeCouleur(couleur) && c.getTaille() == taille) {
+                return c;
+            }
+        }
         return null;
     }
 
@@ -53,19 +93,37 @@ public class Table {
     private void retirerTetePile(final Cube tete) {
     	cubes.remove(tete);
     }
+   
 
-    // Pose un cube sur un cube
-    public void poserCubeSurCube(final Cube cube, final String couleur, final Taille taille) {
-    	Cube c = contientCube(couleur, taille);
-    	if (c != null) {
-    		empilerCubeSurCube(cube,c);
-    	} else {
-    		System.out.println("Nous n'avons pas trouvé de cube disponible ...");
-    	}
+    public boolean poserCubeSurCube(final Cube cube, final Couleur couleur, final Taille taille) {
+        Cube c = null;
+        Taille tTenu = cube.getTaille();
+        
+        if (couleur == null && taille == null) {
+            c = contientCubeVide(tTenu);
+        } else if (couleur != null && taille == null) {
+            c = contientCubeCouleur(couleur, tTenu);
+        } else if (couleur == null && taille != null) {
+            c = contientCubeTaille(taille);
+        } else {
+            c = contientCube(couleur, taille);
+        }
+        
+        if (c != null) {
+            if (c.peutAccueillir(cube.getTaille())) {
+                empilerCubeSurCube(cube, c);
+                return true;
+            } else {
+                System.out.println("Trop gros !");
+                return false;
+            }
+        }
+        System.out.println("Support non trouvé.");
+        return false;
     }
 
     // Empile un cube sur un autre cube
-    private void empilerCubeSurCube(final Cube ancienneTete, final Cube nouvelleTete) {
+    private void empilerCubeSurCube(final Cube nouvelleTete, final Cube ancienneTete) {
     	nouvelleTete.setSuivant(ancienneTete);
     	retirerTetePile(ancienneTete);
     	ajouterTetePile(nouvelleTete);
@@ -82,5 +140,17 @@ public class Table {
         }
         return cube;
     }
-
+    
+    public void afficherTable() {
+        System.out.println("--- TABLE ---");
+        if (cubes.isEmpty()) {
+            System.out.println("(La table est vide)");
+        } else {
+            for (Cube c : cubes) {
+                System.out.print("[Pile] ");
+                c.afficher();
+            }
+        }
+        System.out.println("-------------");
+    }
 }

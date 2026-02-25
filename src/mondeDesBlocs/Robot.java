@@ -25,13 +25,17 @@ public class Robot {
         this.table = value;
     }
     
-    private String validerCouleur(String couleur) {
-    	String nouvCouleur;
+    public Robot(final Table table) {
+    	this.table = table;
+    }
+    
+    private Couleur validerCouleur(Couleur couleur) {
+    	Couleur nouvCouleur;
     	
     	if (couleur != null) {
     		nouvCouleur = couleur;
     	} else {
-    		nouvCouleur = "rouge";
+    		nouvCouleur = Couleur.rouge;
     	}
     	return nouvCouleur;
     }
@@ -42,15 +46,15 @@ public class Robot {
     	if (taille != null) {
     		nouvTaille = taille;
     	} else {
-    		nouvTaille = Taille.Grand;
+    		nouvTaille = Taille.grand;
     	}
     	return nouvTaille;
     }
 
     // Permet de créer un cube
-    public void creerCube(final String couleur, final Taille taille) {
+    public void creerCube(final Couleur couleur, final Taille taille) {
     	if (!tientCube()) {
-        	String couleurFinale = validerCouleur(couleur);
+        	Couleur couleurFinale = validerCouleur(couleur);
         	Taille tailleFinale = validerTaille(taille);
         	
     		Cube nouveau = new Cube(couleurFinale, tailleFinale);
@@ -80,22 +84,20 @@ public class Robot {
     }
 
     // Prend un cube sur la table
-    public void prendreCube(final String couleur, final Taille taille) {
-    	if (!tientCube()) {
-        	Table table = this.getTable();
-        	String couleurFinale = validerCouleur(couleur);
-        	Taille tailleFinale = validerTaille(taille);
-        	
-    		Cube nouvCube = table.getCube(couleurFinale, tailleFinale);
-    		
-    		if (nouvCube != null) {
-    			saisirCube(nouvCube);
-    		} else {
-    			System.out.println("Aucun cube n'a été trouvé !");
-    		}
-    	} else {
-    		System.out.println("Vous tenez déjà un cube !");
-    	}
+    public void prendreCube(final Couleur couleur, final Taille taille) {
+        if (!tientCube()) {
+            Cube nouvCube = table.getCube(couleur, taille);
+            
+            if (nouvCube != null) {
+                saisirCube(nouvCube);
+                System.out.print("Vous tenez le cube : ");
+                nouvCube.afficher();
+            } else {
+                System.out.println("Aucun cube correspondant n'a été trouvé au sommet !");
+            }
+        } else {
+            System.out.println("Le robot tient déjà un cube !");
+        }
     }
 
     // Pose le cube tenu sur la table
@@ -112,19 +114,30 @@ public class Robot {
     }
 
     // Pose le cube tenu sur un autre cube
-    public void poserCubeSurCube(final String couleur, final Taille taille) {
-    	if (tientCube()) {
-    		Table table = this.getTable();
-        	String couleurFinale = validerCouleur(couleur);
-        	Taille tailleFinale = validerTaille(taille);
-        	
-        	Cube cubeTenu = getCubeTenu();
-        	table.poserCubeSurCube(cubeTenu, couleurFinale, tailleFinale);
-        	
-        	saisirCube(null);
-    	} else {
-    		System.out.println("Vous ne pouvez pas poser un cube inexistant !");
-    	}
+    public void poserCubeSurCube(final Couleur couleur, final Taille taille) {
+        if (tientCube()) {
+            Table table = this.getTable();
+            
+            Cube cubeAMettre = getCubeTenu();
+
+            boolean reussite = table.poserCubeSurCube(cubeAMettre, couleur, taille);
+            
+            if (reussite) {
+                saisirCube(null);
+            }
+        } else {
+            System.out.println("Vous ne tenez pas de cube !");
+        }
+    }
+    
+    public void afficherRobot() {
+        System.out.println("--- État du Robot ---");
+        if (tientCube()) {
+            System.out.print("Le robot tient le cube : ");
+            this.getCubeTenu().afficher(); 
+        } else {
+            System.out.println("Le robot a les mains vides.");
+        }
     }
 
 }

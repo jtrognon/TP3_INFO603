@@ -4,7 +4,7 @@ package mondeDesBlocs;
 public class Cube {
     private Taille taille;
 
-    private Taille getTaille() {
+    public Taille getTaille() {
         // Automatically generated method. Please do not modify this code.
         return this.taille;
     }
@@ -14,14 +14,14 @@ public class Cube {
         this.taille = value;
     }
 
-    private String couleur;
+    private Couleur couleur;
 
-    private String getCouleur() {
+    private Couleur getCouleur() {
         // Automatically generated method. Please do not modify this code.
         return this.couleur;
     }
 
-    private void setCouleur(final String value) {
+    private void setCouleur(final Couleur value) {
         // Automatically generated method. Please do not modify this code.
         this.couleur = value;
     }
@@ -40,26 +40,46 @@ public class Cube {
 
     private Cube dessous;
 
-    public Cube(final String couleur, final Taille taille) {
-        // TODO Auto-generated return
+    public Cube(final Couleur couleur, final Taille taille) {
+        this.couleur = couleur;
+        this.taille = taille;
+        this.dessus = null;
+        this.dessous = null;
     }
 
-    public boolean estMemeCouleur(final String couleur) {
-        // TODO Auto-generated return
-        return false;
+    public boolean estMemeCouleur(final Couleur couleur) {
+        return this.couleur == couleur;
     }
 
     public Cube getSuivant() {
-        // TODO Auto-generated return
-        return null;
+        return this.dessus;
     }
 
     public void setSuivant(final Cube cube) {
+    	this.dessus = cube;
     }
 
     public boolean peutAccueillir(final Taille taille) {
-        // TODO Auto-generated return
-        return false;
+    	boolean res;
+    	
+        if (this.taille == null || taille == null) {
+        	res = false;
+        } else {
+        	// Basé sur l'ordre de l'enum (Petit < Moyen < Grand)
+        	res = this.taille.ordinal() >= taille.ordinal();
+        }
+        
+        return res;
     }
 
+    public void afficher() {
+        System.out.print("[" + this.couleur + " " + this.taille + "]");
+        
+        if (this.dessus != null) {
+            System.out.print(" sur ");
+            this.dessus.afficher(); 
+        } else {
+            System.out.println("");
+        }
+    }
 }
