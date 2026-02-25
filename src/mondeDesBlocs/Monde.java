@@ -49,6 +49,7 @@ public class Monde {
 		c = Keyboard.getChar();
 		System.out.println();
 		switch (c) {
+		// Creer un cube
 		case '1': 
 			System.out.print("Couleur du cube (rouge/vert/jaune/bleu/violet/cyan/gris/noir) : ");
 			coul = Couleur.getCouleur(Keyboard.getString());
@@ -58,14 +59,15 @@ public class Monde {
 			D2R2.creerCube(coul, tc);
 			System.out.println();
 			break;
+		// Détruire un cube
 		case '2':
 			System.out.println("Le cube tenu par le robot va être détruit ");
 //			Keyboard.pause();
 			D2R2.supprimerCube();
 			System.out.println();
 			break;
+		// Prendre un cube
 		case '3' :
-			/* PRENDRE : NE PREND PAS N'IMPORTE QUELLE COULEUR SI PAS DE COULEUR DONNÉES */
 			System.out.print("Couleur du cube (rouge/vert/jaune/bleu/violet/cyan/gris/noir) : ");
 			coul = Couleur.getCouleur(Keyboard.getString());
 
@@ -75,13 +77,14 @@ public class Monde {
 			D2R2.prendreCube(coul, tc);
 			System.out.println();
 			break;
+		// Poser un cube sur la table
 		case '4' :
 			System.out.println("Le cube tenu par le robot va être posé sur la table !");
 			D2R2.poserCubeSurTable();
 			System.out.println();
 			break;
+		// Poser un cube sur un cube
 		case '5' :
-			/* POSER SUR CUBE : PROBLÈME QUAND PAS DE COULEUR DONNÉE */
 			System.out.print("Couleur du cube (rouge/vert/jaune/bleu/violet/cyan/gris/noir) : ");
 			coul = Couleur.getCouleur(Keyboard.getString());
 

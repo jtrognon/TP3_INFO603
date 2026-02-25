@@ -37,6 +37,7 @@ public class Table {
         return null;
     }
     
+    // Récupère le premier cube vide de taille nécessaire (pour poser cube)
     private Cube contientCubeVide(final Taille tailleDuCubeTenu) {
         for (Cube c : cubes) {
             if (tailleDuCubeTenu == null || c.peutAccueillir(tailleDuCubeTenu)) {
@@ -46,6 +47,7 @@ public class Table {
         return null;
     }
 
+    // Récupère le premier cube de couleur donnée et de taille nécessaire (pour poser cube)
     private Cube contientCubeCouleur(final Couleur couleur, final Taille tailleDuCubeTenu) {
         for (Cube c : cubes) {
             if (c.estMemeCouleur(couleur)) {
@@ -57,6 +59,7 @@ public class Table {
         return null;
     }
     
+    // Prend le premier cube de taille donnée
     private Cube contientCubeTaille(final Taille taille) {
     	for (Cube c : cubes) {
     		if (c.getTaille() == taille) {
@@ -95,6 +98,7 @@ public class Table {
     }
    
 
+    // Pose un cube sur un autre cube
     public boolean poserCubeSurCube(final Cube cube, final Couleur couleur, final Taille taille) {
         Cube c = null;
         Taille tTenu = cube.getTaille();
@@ -141,6 +145,7 @@ public class Table {
         return cube;
     }
     
+    // Affiche la table
     public void afficherTable() {
         System.out.println("--- TABLE ---");
         if (cubes.isEmpty()) {
